@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.ConnectionUtil;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.Book;
 
@@ -41,7 +42,7 @@ public class BookDaoImpl implements BookDao {
             }
             return book;
         } catch (SQLException e) {
-            throw new RuntimeException("Error inserting book: " + book, e);
+            throw new DataProcessingException("Can not add new book: " + book, e);
         }
     }
 
@@ -58,7 +59,7 @@ public class BookDaoImpl implements BookDao {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Error finding book by ID: " + id, e);
+            throw new DataProcessingException("Can not find book by id: " + id, e);
         }
     }
 
@@ -72,7 +73,7 @@ public class BookDaoImpl implements BookDao {
                 books.add(parseBook(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving all books", e);
+            throw new DataProcessingException("Can not not find all books", e);
         }
         return books;
     }
@@ -89,7 +90,7 @@ public class BookDaoImpl implements BookDao {
             }
             throw new RuntimeException("Error updating book: " + book);
         } catch (SQLException e) {
-            throw new RuntimeException("Error updating book: " + book, e);
+            throw new DataProcessingException("Can not update book: " + book, e);
         }
     }
 
@@ -101,7 +102,7 @@ public class BookDaoImpl implements BookDao {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Error deleting book by ID: " + id, e);
+            throw new DataProcessingException("Can not delete book with id: " + id, e);
         }
     }
 
